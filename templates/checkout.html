@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block title %}Checkout{% endblock %}
+
+
+{% block content %}
+<main>
+    {% if current_user.is_authenticated %}
+    
+        {% if session['cart'] != [] %}
+        <section class="checkoutSectionOne">
+            <h1>Checkout</h1>
+            <table class="checkoutTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product Image</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Qty</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set totalNS = namespace(total=0) %}
+
+                   
+                    {% for item in session['cart'] %}
+                    
+                    {% set subtotal = item.price * item.quantity %}
+                    {% set totalNS.total = totalNS.total + subtotal %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td><img src="{{item.image}}" class="checkoutItemImage"></td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.price}} $</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{subtotal | round(2)}} $</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="checkoutActions">
+                <div class="checkoutTotal">
+                    <h2>Total: {{totalNS.total | round(2)}} $</h2>
+                </div>
+                <div class="checkoutButtons">
+                    <a href="{{url_for('home')}}" class="checkoutCancel">Cancel</a>
+                    <a href="{{url_for('profile')}}" class="checkoutConfirm">Confirm</a>
+                </div>
+            </div>
+        </section>
+        {% else %}
+            <div class="checkoutNotOrEmptyAuthenticated">
+                <h1>Your cart is empty</h1>
+                <a href="{{url_for('home')}}">Go back to the menu</a>
+            </div>
+        {% endif %}
+    {% else %}
+    <div class="checkoutNotOrEmptyAuthenticated">
+        <h1>You are not authenticated</h1>
+        <a href="{{url_for('login')}}">Login with your user</a>
+    </div>
+    {% endif %}
+</main>
+{% endblock %}
+

@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<main class="login-main">
+    <div class="blob"></div>
+    <section class="wrapper">
+        <form action="/login" method="post" class="login-form">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h2>Log In</h2>
+            <div class="input-box">
+                <span class="icon">
+                    <i class="uil uil-user"></i>
+                </span>
+                <input type="text" name="username" id="username" required>
+                <label for="username">Username</label>
+            </div>
+            <div class="input-box">
+                <span class="icon">
+                    <i class="uil uil-lock"></i>
+                </span>
+                <input type="password" name="password" id="password" required>
+                <label for="password">Password</label>
+            </div>
+            <div class="others-box">
+                <label for="remember">
+                    <input type="checkbox" name="remember" id="remember">
+                    Remember me
+                </label>
+                <a href="#">Forget password ?</a>
+            </div>
+            <button type="submit">Login</button>
+            <div class="register-box">
+                <p>
+                    Don't have an account? <a href="#">Register</a>
+                </p>
+            </div>
+        </form>
+    </section>
+</main>
+{% endblock %}
